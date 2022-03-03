@@ -50,11 +50,11 @@ class _GameState extends State<Game> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _suggestions(),
-          Divider(height: 100),
-          score(),
-          Divider(),
-          divider(),
+          const Spacer(flex: 5),
+          Expanded(flex: 3, child: _suggestions()),
+          const Spacer(flex: 5),
+          Expanded(flex: 2, child: score()),
+          const Spacer(flex: 5),
           gridGame(),
           stopGame(),
         ],
@@ -63,14 +63,13 @@ class _GameState extends State<Game> {
   }
 
   Widget score() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text("X = $scoreX", textScaleFactor: 2),
-          Text("O = $scoreO", textScaleFactor: 2),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Expanded(flex: 45, child: FittedBox(child: Text("X = $scoreX"))),
+        Spacer(flex: 10),
+        Expanded(flex: 45, child: FittedBox(child: Text("O = $scoreO"))),
+      ],
     );
   }
 
@@ -110,11 +109,10 @@ class _GameState extends State<Game> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Center(
-              child: Text("${isPar ? 'Pareggio' : '$namePlayer ha vinto!'}")),
+          title: Center(child: Text("${isPar ? 'draw' : '$namePlayer win!'}")),
           content: ElevatedButton(
             onPressed: () => restartGame(),
-            child: Text("Continua"),
+            child: Text("Continue"),
           ),
           elevation: 5,
         );
@@ -142,20 +140,18 @@ class _GameState extends State<Game> {
 
   Widget _suggestions() {
     String namePlayer = (turnPlayer) ? "X" : "O";
-    return Text("E' il turno di ${namePlayer}", textScaleFactor: 2);
+    return FittedBox(child: Text("${namePlayer} Turn"));
   }
 
   Widget gridGame() {
-    return Container(
-      child: Column(
-        children: [
-          seriesBox(0, 1, 2),
-          divider(),
-          seriesBox(3, 4, 5),
-          divider(),
-          seriesBox(6, 7, 8),
-        ],
-      ),
+    return Column(
+      children: [
+        seriesBox(0, 1, 2),
+        divider(),
+        seriesBox(3, 4, 5),
+        divider(),
+        seriesBox(6, 7, 8),
+      ],
     );
   }
 
@@ -163,8 +159,13 @@ class _GameState extends State<Game> {
 
   Widget seriesBox(int val1, int val2, int val3) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [box(val1), box(val2), box(val3)],
+      children: [
+        Expanded(flex: 32, child: box(val1)),
+        const Spacer(flex: 2),
+        Expanded(flex: 32, child: box(val2)),
+        const Spacer(flex: 2),
+        Expanded(flex: 32, child: box(val3)),
+      ],
     );
   }
 
